@@ -1,0 +1,68 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["clientExtensions"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id     Int    @id @default(autoincrement())
+  email  String @unique
+  name   String
+  roleId Int
+
+  posts    Post[]
+  comments Comment[]
+  likes    Like[]
+
+  @@map("user")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  Int
+
+  author   User      @relation(fields: [authorId], references: [id])
+  comments Comment[]
+  likes    Like[]
+
+  @@map("post")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  content   String
+  authorId  Int
+  postId    Int
+
+  author User   @relation(fields: [authorId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id])
+  likes  Like[]
+
+  @@map("comment")
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  authorId  Int
+  postId    Int?
+  commentId Int?
+
+  author  User     @relation(fields: [authorId], references: [id])
+  post    Post?    @relation(fields: [postId], references: [id])
+  comment Comment? @relation(fields: [commentId], references: [id])
+
+  @@map("like")
+}

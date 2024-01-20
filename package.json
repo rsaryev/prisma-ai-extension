@@ -1,0 +1,43 @@
+{
+  "name": "prisma-ai-extension",
+  "version": "0.0.5",
+  "author": "Rustam Saryev",
+  "description": "This project is a powerful extension for Prisma Client designed to seamlessly integrate the OpenAI API for generating Prisma queries from natural language inputs.",
+  "keywords": [
+    "prisma",
+    "@prisma/client",
+    "extension",
+    "ai",
+    "openai",
+    "chatgpt"
+  ],
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsaryev/prisma-ai-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rsaryev/prisma-ai-extension/issues"
+  },
+  "homepage": "https://github.com/rsaryev/prisma-ai-extension#readme",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "@prisma/client": "latest"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-import": "^2.29.1",
+    "typescript": "4.9.4",
+    "prettier": "^3.2.4"
+  },
+  "dependencies": {
+    "openai": "^4.24.7",
+    "prisma": "latest",
+    "@prisma/client": "latest"
+  }
+}
