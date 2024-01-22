@@ -18,6 +18,12 @@ npm install --save prisma-ai-extension
 
 Incorporate the extension into your code by importing it and passing it to the `PrismaClient` constructor. Here's an example in TypeScript:
 
+- `model`: The OpenAI model to use. The default is `gpt-3.5-turbo`.
+- `pathToSchema`: The path to the Prisma schema file.
+- `retry`: Optional. Default is false. If true, the extension will retry the query generation in case of an error.
+- `debug`: Optional. Default is false. If true, the extension will log the generated query to the console.
+- `readonly`: Optional. Default is true. If true, the extension will not execute any methods that modify data.
+
 ```ts
 import { PrismaClient, User } from '@prisma/client';
 import { PrismaAI } from 'prisma-ai-extension';
@@ -26,10 +32,11 @@ const prisma = new PrismaClient({
     errorFormat: 'pretty',
 }).$extends(
     PrismaAI({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
+        pathToSchema: './prisma/schema.prisma',
         retry: true,
         debug: true,
-        pathToSchema: './prisma/schema.prisma',
+        readonly: false,
     }),
 );
 
@@ -39,4 +46,5 @@ const { id } = await prisma.$queryAI<User>('create user');
 const user = await prisma.$queryAI<User>(
     `find user with id ${id} and include posts and include comments and likes to each post and comment`,
 );
+console.log(user);
 ```

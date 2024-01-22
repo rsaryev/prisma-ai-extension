@@ -3,8 +3,11 @@ import { generatePrismaQuery } from './generate-prisma-query';
 import { PrismaAIArgs } from './type';
 import { getPrismaSchema } from './get-prisma-schema';
 import { logger } from './logger';
+import { PrismaAIError } from './error';
 
-export const PrismaAI = ({ model, retry = true, debug = false, pathToSchema }: PrismaAIArgs) =>
+const prismaNotReadonlyMethods = ['create', 'update', 'delete', 'upsert', 'updateMany', 'deleteMany'];
+
+export const PrismaAI = ({ model, retry = true, debug = false, pathToSchema, readonly = true }: PrismaAIArgs) =>
   Prisma.defineExtension({
     name: 'prisma-ai-extension',
     client: {
@@ -13,15 +16,20 @@ export const PrismaAI = ({ model, retry = true, debug = false, pathToSchema }: P
         const schema = await getPrismaSchema(pathToSchema);
 
         const run = async (error?: string): Promise<T> => {
-          const { entity, method, args } = await generatePrismaQuery({ query, schema, error, model });
+          const { entity, method, args, isReadonly } = await generatePrismaQuery({ query, schema, error, model });
 
           try {
-            if (debug) {
-              logger(`${entity}.${method}(${JSON.stringify(args)})`);
+            if (readonly && !isReadonly && prismaNotReadonlyMethods.includes(method)) {
+              throw new PrismaAIError(`${entity}.${method}(${JSON.stringify(args)}) is not a readonly query`);
+            } else if (debug) {
+              logger(`${readonly ? '[Readonly] ' : ''}${entity}.${method}(${JSON.stringify(args)})`);
             }
+
             return await ctx[entity][method](args);
           } catch (e: any) {
-            if (retry) {
+            if (e instanceof PrismaAIError) {
+              throw e;
+            } else if (retry) {
               return await run(e.message.replace(/[\n\r]+/g, ''));
             } else {
               throw e;

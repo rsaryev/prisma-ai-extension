@@ -61,8 +61,12 @@ export const generatePrismaQuery = async ({
                 },
               },
             },
+            isReadonly: {
+              type: 'boolean',
+              description: 'If true, the extension will not execute any methods that modify data',
+            },
           },
-          required: ['entity', 'method', 'args'],
+          required: ['entity', 'method', 'args', 'isReadonly'],
         },
       },
     ],

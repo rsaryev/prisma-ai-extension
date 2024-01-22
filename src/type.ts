@@ -3,6 +3,7 @@ export interface PrismaAIArgs {
   retry?: boolean;
   debug?: boolean;
   pathToSchema: string;
+  readonly?: boolean;
 }
 
 export interface RequestGeneratePrismaQuery {
@@ -16,4 +17,5 @@ export interface ResponseGeneratePrismaQuery {
   entity: string;
   method: string;
   args: object;
+  isReadonly: boolean;
 }
