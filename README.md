@@ -1,3 +1,7 @@
+[![npm](https://img.shields.io/npm/v/prisma-ai-extension)](https://www.npmjs.com/package/prisma-ai-extension)
+[![Node.js Package](https://github.com/rsaryev/prisma-ai-extension/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/rsaryev/prisma-ai-extension/actions/workflows/npm-publish.yml)
+[![prisma-ai-extension npm downloads](https://img.shields.io/npm/dt/prisma-ai-extension)](https://www.npmjs.com/package/prisma-ai-extension)
+
 # Prisma AI Extension
 
 This project is a powerful extension for Prisma Client designed to seamlessly integrate the OpenAI API for generating Prisma queries from natural language inputs.
@@ -29,11 +33,10 @@ const prisma = new PrismaClient({
     }),
 );
 
-(async () => {
-  // User.findUnique({"where":{"id":1},"include":{"posts":{"include":{"comments":true,"likes":true}}}})
-  const user = await prisma.$queryAI<User>(
-        `find user with id 1 and include posts and include comments and likes to each post and comment`,
-    );
-    console.log(user);
-})();
+// User.create({"data":{"email":"test@example.com","name":"Test User","roleId":1}})
+const { id } = await prisma.$queryAI<User>('create user');
+// User.findUnique({"where":{"id":1},"include":{"posts":{"include":{"comments":true,"likes":true}}}})
+const user = await prisma.$queryAI<User>(
+    `find user with id ${id} and include posts and include comments and likes to each post and comment`,
+);
 ```
