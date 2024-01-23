@@ -3,7 +3,7 @@ import { openaiClient } from './openai-client';
 import { RequestGeneratePrismaQuery, ResponseGeneratePrismaQuery } from './type';
 import { DMMF } from '@prisma/client/runtime/library';
 
-import ModelAction = DMMF.ModelAction;
+const ModelAction = DMMF.ModelAction;
 
 const buildMessages = ({ query, schema, error }: RequestGeneratePrismaQuery): ChatCompletionMessageParam[] => {
   const messages: ChatCompletionMessageParam[] = [

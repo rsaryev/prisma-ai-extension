@@ -1,6 +1,6 @@
 {
   "name": "prisma-ai-extension",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "author": "Rustam Saryev",
   "description": "This project is a powerful extension for Prisma Client designed to seamlessly integrate the OpenAI API for generating Prisma queries from natural language inputs.",
   "keywords": [
